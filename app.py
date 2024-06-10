@@ -40,7 +40,7 @@ type_theme_map = {
     "water": "base",
 }
 
-file_formats = ["geojson", "geojsonseq", "parquet"]
+file_formats = ["geojson", "geojsonseq", "geoparquet"]
 
 input_option = st.sidebar.radio("Input Option", ["Paste GeoJSON", "Upload File"])
 data_type = st.sidebar.selectbox("Data Type", data_types)
