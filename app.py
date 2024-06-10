@@ -1,4 +1,5 @@
 import io
+import os
 import subprocess
 
 import geopandas as gpd
@@ -81,7 +82,7 @@ if st.button("Download Data"):
             "--bbox",
             bbox_str,
             "-o",
-            "output.{}".format(file_format),
+            f"output_{custom_theme}_{custom_type}.{file_format}",
             "-r",
             version,
             "-cth",
@@ -103,10 +104,16 @@ if st.button("Download Data"):
             rc = process.poll()
             if rc == 0:
                 st.success("Data downloaded successfully!")
+                output_file = f"output_{custom_theme}_{custom_type}.{file_format}"
+                file_size = os.path.getsize(output_file)
+                file_size_mb = file_size / (1024 * 1024)
+                file_size_str = f"{file_size_mb:.2f} MB"
+                file_info = f"{output_file} ({file_size_str})"
+
                 st.download_button(
-                    label="Download File",
-                    data=open(f"output.{file_format}", "rb").read(),
-                    file_name=f"output.{file_format}",
+                    label=file_info,
+                    data=open(output_file, "rb").read(),
+                    file_name=output_file,
                     mime=f"application/{file_format}",
                 )
             else:
