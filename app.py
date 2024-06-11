@@ -48,7 +48,7 @@ data_type = st.sidebar.selectbox("Data Type", data_types)
 file_format = st.sidebar.selectbox("File Format", file_formats)
 version = st.sidebar.text_input("Version", value="2024-05-16-beta.0")
 custom_theme = st.sidebar.text_input("Theme", value=type_theme_map.get(data_type, ""))
-custom_type = st.sidebar.text_input("Type", value=data_type)
+custom_type = st.sidebar.text_input("Type", help="Modify to * for wild option or leave empty",value=data_type)
 
 if input_option == "Paste GeoJSON":
     geojson_input = st.text_area("Paste GeoJSON")
@@ -87,9 +87,11 @@ if st.button("Download Data"):
             version,
             "-cth",
             custom_theme,
-            "-cty",
-            custom_type,
         ]
+
+        if custom_type != "*" and custom_type:
+            cmd.append("-cty")
+            cmd.append(custom_type)
 
         try:
             process = subprocess.Popen(
